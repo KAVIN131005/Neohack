@@ -1,0 +1,62 @@
+{
+  "lenders": [
+    {
+      "id": "de7d",
+      "email": "eef@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "398d",
+      "email": "2@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "3b02",
+      "email": "12@gmail.com",
+      "password": "12"
+    }
+  ],
+  "borrowers": [
+    {
+      "id": "a67a",
+      "email": "grfr@gmail.com",
+      "password": "esdrftgyhu"
+    },
+    {
+      "id": "8683",
+      "email": "ghvhg@gmail.com",
+      "password": "gv"
+    },
+    {
+      "id": "e7f4",
+      "email": "fdxf@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "13c8",
+      "email": "fdxf@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "318a",
+      "email": "3e@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "b6f4",
+      "email": "e3@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "27bc",
+      "email": "12345@gmail.com",
+      "password": "12"
+    },
+    {
+      "id": "fe86",
+      "email": "1@gmail.com",
+      "password": "12"
+    }
+  ],
+  "admin": []
+}

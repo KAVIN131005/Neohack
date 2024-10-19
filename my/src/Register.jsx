@@ -1,9 +1,10 @@
 // src/components/Register.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import './Login.css';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import styles
 const Register = () => {
   const [role, setRole] = useState('lender');
   const [email, setEmail] = useState('');
@@ -15,37 +16,65 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setErrorMessage('');
+    setErrorMessage(''); // Clear previous messages
     setSuccessMessage('');
 
-    if (password === confirmPassword) {
+    if (validate()) {
       try {
-        const response = await axios.post('http://localhost:5000/api/register', {
-          email,
-          password,
-          role,
-        });
-        
-        if (response.data.success) {
-          setSuccessMessage("Registration successful!");
-          // Redirect based on role
-          if (role === 'lender') {
-            navigate('/lender-account');
-          } else if (role === 'borrower') {
-            navigate('/borrower-account');
-          } else {
-            navigate('/admin-account');
-          }
-        } else {
-          setErrorMessage("Registration failed. Please try again.");
+        // Check if the user already exists
+        const response = await axios.get(`http://localhost:3001/${role}s`);
+        const existingUsers = response.data;
+
+        const exists = existingUsers.some(u => u.email === email);
+        if (exists) {
+          setErrorMessage("User already exists");
+          toast.warning("User Already Exists")
+          return;
         }
+
+        // Register new user
+        await axios.post(`http://localhost:3001/${role}s`, {
+          email: email,
+          password: password
+        });
+
+        toast.success('Registration Successful')
+        navigate(`/${role}-login`);
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        
+        // Redirect to login page after a short delay
+
       } catch (error) {
-        console.error("There was an error registering!", error);
-        setErrorMessage("Error registering. Please check your input.");
+        console.error('Error during registration:', error);
+        setErrorMessage('Registration failed. Please try again later.');
       }
-    } else {
-      setErrorMessage("Passwords don't match!");
     }
+  };
+
+  const validate = () => {
+    let result = true;
+    if (email === '' || email === null) {
+      result = false;
+      setErrorMessage("Please enter the email.");
+    }
+    if (password === '' || password === null) {
+      result = false;
+      setErrorMessage("Please enter the password.");
+    }
+    if (confirmPassword === '' || confirmPassword === null) {
+      result = false;
+      setErrorMessage("Please confirm the password.");
+    }
+    if (password !== confirmPassword) {
+      result = false;
+      setErrorMessage("Passwords do not match.");
+    }
+    if (role === "") {
+      return false;
+    }
+    return result;
   };
 
   return (

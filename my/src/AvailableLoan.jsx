@@ -19,7 +19,7 @@ const AvailableLoan = () => {
       try {
         const loanResponse = await axios.get('http://localhost:5000/api/lender/available-loans', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming token is stored in localStorage
+            Authorization: `Bearer ${localStorage.getItem('token')}`// Assuming token is stored in localStorage
           }
         });
         setLoans(loanResponse.data);
@@ -44,11 +44,14 @@ const AvailableLoan = () => {
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
+  };
 
+  // Function to filter loans when search button is clicked
+  const handleSearch = () => {
     const filtered = loans.filter((loan) => {
       const meetsRiskLevel = filters.riskLevel ? loan.riskLevel === filters.riskLevel : true;
       const meetsBusinessType = filters.businessType ? loan.businessType === filters.businessType : true;
-      const meetsLoanAmount = filters.loanAmount ? loan.loanAmount <= filters.loanAmount : true;
+      const meetsLoanAmount = filters.loanAmount ? loan.loanAmount <= parseInt(filters.loanAmount) : true;
 
       return meetsRiskLevel && meetsBusinessType && meetsLoanAmount;
     });
@@ -72,10 +75,9 @@ const AvailableLoan = () => {
 
   // Function to set up repayment via Razorpay
   const handleRepaymentSetup = () => {
-    // Razorpay repayment setup logic
     const options = {
-      key: 'YOUR_RAZORPAY_KEY', // Razorpay key
-      amount: lenderProfile.repaymentAmount * 100, // Assuming repaymentAmount is in INR
+      key: 'YOUR_RAZORPAY_KEY',
+      amount: lenderProfile.repaymentAmount * 100,
       currency: 'INR',
       name: 'Peer-to-Peer Lending',
       description: 'Setting up repayment',
@@ -84,9 +86,9 @@ const AvailableLoan = () => {
         alert('Repayment setup successful');
       },
       prefill: {
-        name: lenderProfile.name, // Display lender's name
-        email: lenderProfile.email, // Display lender's email
-        contact: lenderProfile.phoneNumber, // Display lender's phone
+        name: lenderProfile.name,
+        email: lenderProfile.email,
+        contact: lenderProfile.phoneNumber,
       },
       theme: {
         color: '#3399cc',
@@ -146,6 +148,8 @@ const AvailableLoan = () => {
             placeholder="Enter max loan amount"
           />
         </label>
+
+        
       </div>
 
       {/* Loan Listings */}
