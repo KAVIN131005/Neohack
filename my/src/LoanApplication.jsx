@@ -172,7 +172,7 @@ const LoanApplication = () => {
         <section className="section">
           <h3>Document Upload</h3>
           <label>
-            Upload Documents (e.g., Proof of Income, ID, etc.):
+            Upload Documents (e.g., Proof of Income, ID, etc.):<br></br>
             <input
               type="file"
               multiple
