@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className="header">
       <div className="logo">
-        <h1>Lending Hands</h1>
+        <h1 style={{color:'white'}}>Lending Hands</h1>
       </div>
       <nav>
         <ul>
