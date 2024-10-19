@@ -1,22 +1,25 @@
 // src/components/LenderAccount.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
-import './LenderAccount.css'; // Include appropriate styling
+import { useNavigate } from 'react-router-dom';
+import './LenderAccount.css';
 
 const LenderAccount = () => {
   const [userData, setUserData] = useState({});
   const [availableLoans, setAvailableLoans] = useState([]);
-  const [paymentHistory, setPaymentHistory] = useState([]); // State for payment history
-  const [notifications, setNotifications] = useState([]); // State for notifications
-  const [reminders, setReminders] = useState([]); // State for reminders
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [paymentHistory, setPaymentHistory] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [reminders, setReminders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // Retrieve the email from localStorage
+    const email = localStorage.getItem('email');
+    console.log("Logged in as:", email); // You can use this email as needed
+
     // Fetch lender account data and available loans
     const fetchUserData = async () => {
       try {
-        // Fetch lender account details
         const accountResponse = await axios.get('http://localhost:5000/api/lender/account', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -24,7 +27,6 @@ const LenderAccount = () => {
         });
         setUserData(accountResponse.data);
 
-        // Fetch available loans for investment
         const loansResponse = await axios.get('http://localhost:5000/api/loans/available', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -32,7 +34,6 @@ const LenderAccount = () => {
         });
         setAvailableLoans(loansResponse.data);
 
-        // Fetch payment history
         const paymentResponse = await axios.get('http://localhost:5000/api/lender/payment-history', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -40,7 +41,6 @@ const LenderAccount = () => {
         });
         setPaymentHistory(paymentResponse.data);
 
-        // Fetch notifications
         const notificationResponse = await axios.get('http://localhost:5000/api/lender/notifications', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -48,7 +48,6 @@ const LenderAccount = () => {
         });
         setNotifications(notificationResponse.data);
 
-        // Fetch reminders
         const remindersResponse = await axios.get('http://localhost:5000/api/lender/reminders', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -64,22 +63,20 @@ const LenderAccount = () => {
   }, []);
 
   const handleInvest = (loanId, loanAmountRemaining) => {
-    // Razorpay payment integration logic here
     const options = {
-      key: 'YOUR_RAZORPAY_KEY', // Razorpay key
-      amount: loanAmountRemaining * 100, // Razorpay accepts amounts in paisa (1 INR = 100 paisa)
+      key: 'YOUR_RAZORPAY_KEY',
+      amount: loanAmountRemaining * 100,
       currency: 'INR',
       name: 'Peer-to-Peer Lending',
       description: `Investing in Loan ID: ${loanId}`,
       handler: function (response) {
-        // Handle successful payment and backend logic
         console.log(response);
         alert('Investment successful');
       },
       prefill: {
-        name: userData.name, // Displaying name used during login
-        email: userData.email, // Displaying email used during login
-        contact: userData.phoneNumber, // Assuming phoneNumber is part of lender profile
+        name: userData.name,
+        email: userData.email,
+        contact: userData.phoneNumber,
       },
       theme: {
         color: '#3399cc',
@@ -90,9 +87,8 @@ const LenderAccount = () => {
     rzp.open();
   };
 
-  // Navigate to available loans
   const handleAvailableLoansClick = () => {
-    navigate('/available-loans'); // Navigate to the AvailableLoans page
+    navigate('/available-loans');
   };
 
   return (
@@ -136,7 +132,6 @@ const LenderAccount = () => {
         </div>
       </section>
 
-      {/* Payment History Section */}
       <section className="payment-history">
         <h3>Payment History</h3>
         <ul>
@@ -154,7 +149,6 @@ const LenderAccount = () => {
         </ul>
       </section>
 
-      {/* Notifications Section */}
       <section className="notifications">
         <h3>Notifications</h3>
         <ul>
@@ -170,7 +164,6 @@ const LenderAccount = () => {
         </ul>
       </section>
 
-      {/* Reminders Section */}
       <section className="reminders">
         <h3>Reminders</h3>
         <ul>

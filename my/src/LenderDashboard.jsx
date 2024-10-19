@@ -12,6 +12,10 @@ const LenderLogin = () => {
     e.preventDefault();
     // Handle Lender login logic
     console.log("Lender login successful");
+
+    // Save email to localStorage for later use
+    localStorage.setItem('email', email);
+
     // Navigate to lender account page or dashboard after successful login
     navigate('/lender-account');
   };

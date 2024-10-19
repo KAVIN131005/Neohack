@@ -1,100 +1,103 @@
 /* BorrowerAccount.css */
-
-/* General layout for the account page */
 .account-page {
-  max-width: 1000px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1, h2 {
+h1 {
   text-align: center;
+  margin-bottom: 20px;
   color: #333;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
 }
 
 .section {
   margin-bottom: 30px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .info-group {
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 16px;
 }
 
-p {
-  margin: 0;
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
   color: #555;
 }
 
-strong {
-  color: #333;
-}
-
-/* Loan Information Section */
-.loan-info p {
-  color: #007bff;
-}
-
-/* Financial Statement Section */
-.financial-info p {
-  color: #28a745;
-}
-
-/* Payment History Section */
-.payment-history ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.payment-history li {
-  background-color: #f1f1f1;
-  margin-bottom: 10px;
+input[type="text"],
+input[type="email"],
+input[type="number"] {
   padding: 10px;
+  border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.payment-history li strong {
-  color: #333;
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
-/* Notifications Section */
-.notifications ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.notifications li {
-  background-color: #fff8c4;
-  padding: 10px;
+.save-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
   border-radius: 4px;
-  margin-bottom: 10px;
-  border-left: 5px solid #f39c12;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Reminders Section */
-.reminders ul {
-  list-style-type: none;
-  padding: 0;
+.save-btn:hover {
+  background-color: #0056b3;
 }
 
-.reminders li {
-  background-color: #eaf4fc;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  border-left: 5px solid #3498db;
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-/* Loan Application Button */
+@media (max-width: 768px) {
+  .account-page {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 18px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="number"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+  
+  .save-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
 .loan-apply-btn {
   display: block;
   width: 100%;
@@ -110,15 +113,4 @@ strong {
 
 .loan-apply-btn:hover {
   background-color: #0056b3;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .info-group {
-    font-size: 14px;
-  }
-
-  .loan-apply-btn {
-    font-size: 16px;
-  }
 }

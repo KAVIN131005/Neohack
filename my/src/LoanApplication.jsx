@@ -60,7 +60,6 @@ const LoanApplication = () => {
       await axios.post('http://localhost:5000/api/borrower/loan-application', formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
         }
       });
       alert("Loan application and documents submitted successfully!");
@@ -77,8 +76,20 @@ const LoanApplication = () => {
         {/* Personal Information */}
         <section className="section">
           <h3>Personal Information</h3>
-          <p><strong>Name:</strong> {userData.name}</p>
-          <p><strong>Email:</strong> {userData.email}</p>
+          <label>Name:
+          <input
+          type="text"
+          placeholder="Name"
+          required
+        />
+        </label>
+        <label>Email:
+          <input
+          type="email"
+          placeholder="Email"
+          required
+        />
+        </label>
           <label>
             Phone Number:
             <input

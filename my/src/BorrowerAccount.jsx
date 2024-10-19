@@ -1,126 +1,212 @@
-// src/components/BorrowerAccount.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './BorrowerAccount.css';
 
 const BorrowerAccount = () => {
-  const [userData, setUserData] = useState({});
-  const [notifications, setNotifications] = useState([]);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    businessName: '',
+    businessType: '',
+    businessAddress: '',
+    creditScore: ''
+  });
+
+  const [loanDetails, setLoanDetails] = useState({
+    loanAmount: '',
+    loanPurpose: '',
+    interestRate: '',
+    loanTerm: ''
+  });
+
+  const [financialStatement, setFinancialStatement] = useState({
+    annualRevenue: '',
+    netProfit: '',
+    assets: '',
+    liabilities: ''
+  });
+
   const [paymentHistory, setPaymentHistory] = useState([]);
-  const [loanDetails, setLoanDetails] = useState({});
-  const [financialStatement, setFinancialStatement] = useState({});
+  const [showNotifications, setShowNotifications] = useState(false); // State for notifications
+  const [showReminders, setShowReminders] = useState(false); // State for reminders
 
   const navigate = useNavigate(); // Initialize navigate for redirection
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/borrower/account', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        setUserData(response.data);
-        setNotifications(response.data.notifications);
-        setPaymentHistory(response.data.paymentHistory);
-        setLoanDetails(response.data.loanDetails);
-        setFinancialStatement(response.data.financialStatement);
-      } catch (error) {
-        console.error("There was an error fetching the user data!", error);
-      }
-    };
+  // Function to handle input changes for user data
+  const handleUserDataChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
-    fetchUserData();
-  }, []);
+  // Function to handle input changes for loan details
+  const handleLoanDetailsChange = (e) => {
+    const { name, value } = e.target;
+    setLoanDetails((prevData) => ({ ...prevData, [name]: value }));
+  };
 
+  // Function to handle input changes for financial statements
+  const handleFinancialStatementChange = (e) => {
+    const { name, value } = e.target;
+    setFinancialStatement((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // Function to toggle the visibility of notifications
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications); // Toggle the state
+    alert('Notifications will be shown here'); // Example action, replace with future notification modal/alert
+  };
+
+  // Function to toggle the visibility of reminders
+  const handleReminderClick = () => {
+    setShowReminders(!showReminders); // Toggle the state
+    alert('Reminders will be shown here'); // Example action, replace with future reminder modal/alert
+  };
   const handleLoanApplicationClick = () => {
     navigate('/loan-application');
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Perform API call to submit the form data, for example:
+    try {
+      const response = await axios.post('http://localhost:5000/api/borrower/account', {
+        userData,
+        loanDetails,
+        financialStatement
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log("Data submitted successfully:", response.data);
+    } catch (error) {
+      console.error("There was an error submitting the data!", error);
+    }
+  };
+
   return (
     <div className="account-page">
-      <h1>Borrower Account Overview</h1>
+      <h2>Borrower Account Overview</h2>
 
       {/* Personal Information Section */}
-      <div className="section">
-        <h2>Personal Information</h2>
-        <div className="info-group">
-          <p><strong>Name:</strong> {userData.name}</p>
-          <p><strong>Email:</strong> {userData.email}</p>
-          <p><strong>Account Type:</strong> Borrower</p>
+      <form onSubmit={handleSubmit}>
+        <div className="section">
+          <h3>Personal Information</h3>
+          <div className="info-group">
+            <label>
+              Name:
+              <input type="text" name="name" value={userData.name} onChange={handleUserDataChange} />
+            </label>
+            <label>
+              Email:
+              <input type="email" name="email" value={userData.email} onChange={handleUserDataChange} />
+            </label>
+          </div>
         </div>
-      </div>
 
-      {/* Business Information Section */}
-      <div className="section">
-        <h2>Business Information</h2>
-        <div className="info-group">
-          <p><strong>Business Name:</strong> {userData.businessName}</p>
-          <p><strong>Business Type:</strong> {userData.businessType}</p>
-          <p><strong>Business Address:</strong> {userData.businessAddress}</p>
+        {/* Business Information Section */}
+        <div className="section">
+          <h3>Business Information</h3>
+          <div className="info-group">
+            <label>
+              Business Name:
+              <input type="text" name="businessName" value={userData.businessName} onChange={handleUserDataChange} />
+            </label>
+            <label>
+              Business Type:
+              <input type="text" name="businessType" value={userData.businessType} onChange={handleUserDataChange} />
+            </label>
+            <label>
+              Business Address:
+              <input type="text" name="businessAddress" value={userData.businessAddress} onChange={handleUserDataChange} />
+            </label>
+          </div>
         </div>
-      </div>
 
-      {/* Loan Information Section */}
-      <div className="section loan-info">
-        <h2>Loan Information</h2>
-        <div className="info-group">
-          <p><strong>Loan Amount:</strong> ${loanDetails.loanAmount}</p>
-          <p><strong>Loan Purpose:</strong> {loanDetails.loanPurpose}</p>
-          <p><strong>Interest Rate:</strong> {loanDetails.interestRate}%</p>
-          <p><strong>Loan Term:</strong> {loanDetails.loanTerm} months</p>
+        {/* Loan Information Section */}
+        <div className="section loan-info">
+          <h3>Loan Information</h3>
+          <div className="info-group">
+            <label>
+              Loan Amount:
+              <input type="number" name="loanAmount" value={loanDetails.loanAmount} onChange={handleLoanDetailsChange} />
+            </label>
+            <label>
+              Loan Purpose:
+              <input type="text" name="loanPurpose" value={loanDetails.loanPurpose} onChange={handleLoanDetailsChange} />
+            </label>
+            <label>
+              Interest Rate:
+              <input type="number" step="0.01" name="interestRate" value={loanDetails.interestRate} onChange={handleLoanDetailsChange} />
+            </label>
+            <label>
+              Loan Term (months):
+              <input type="number" name="loanTerm" value={loanDetails.loanTerm} onChange={handleLoanDetailsChange} />
+            </label>
+          </div>
         </div>
-      </div>
 
-      {/* Financial Statement Section */}
-      <div className="section financial-info">
-        <h2>Financial Statement</h2>
-        <div className="info-group">
-          <p><strong>Annual Revenue:</strong> ${financialStatement.annualRevenue}</p>
-          <p><strong>Net Profit:</strong> ${financialStatement.netProfit}</p>
-          <p><strong>Assets:</strong> ${financialStatement.assets}</p>
-          <p><strong>Liabilities:</strong> ${financialStatement.liabilities}</p>
-          <p><strong>Credit Score:</strong> {userData.creditScore}</p>
+        {/* Financial Statement Section */}
+        <div className="section financial-info">
+          <h3>Financial Statement</h3>
+          <div className="info-group">
+            <label>
+              Annual Revenue:
+              <input type="number" name="annualRevenue" value={financialStatement.annualRevenue} onChange={handleFinancialStatementChange} />
+            </label>
+            <label>
+              Net Profit:
+              <input type="number" name="netProfit" value={financialStatement.netProfit} onChange={handleFinancialStatementChange} />
+            </label>
+            <label>
+              Assets:
+              <input type="number" name="assets" value={financialStatement.assets} onChange={handleFinancialStatementChange} />
+            </label>
+            <label>
+              Liabilities:
+              <input type="number" name="liabilities" value={financialStatement.liabilities} onChange={handleFinancialStatementChange} />
+            </label>
+          </div>
         </div>
-      </div>
 
-      {/* Payment History Section */}
-      <div className="section payment-history">
-        <h2>Payment History</h2>
-        <ul>
-          {paymentHistory.map((history, index) => (
-            <li key={index}>
-              <strong>Date:</strong> {history.date} - <strong>Amount:</strong> ${history.amount}
-            </li>
-          ))}
-        </ul>
-      </div>
+        {/* Payment History Section */}
+        <div className="section payment-history">
+          <h3>Payment History</h3>
+          <ul>
+            {paymentHistory.length > 0 ? (
+              paymentHistory.map((history, index) => (
+                <li key={index}>
+                  <strong>Date:</strong> {history.date} - <strong>Amount:</strong> ${history.amount}
+                </li>
+              ))
+            ) : (
+              <li>No payment history available.</li>
+            )}
+          </ul>
+        </div>
 
-      {/* Notifications Section */}
-      <div className="section notifications">
-        <h2>Notifications</h2>
-        <ul>
-          {notifications.map((notification, index) => (
-            <li key={index}>{notification}</li>
-          ))}
-        </ul>
-      </div>
+        {/* Notification Button */}
+        <div className="section notifications">
+          <h3>Notifications</h3>
+          <button type="button" onClick={handleNotificationClick} className="notification-btn">
+            Show Notifications
+          </button>
+        </div>
 
-      {/* Reminders Section */}
-      <div className="section reminders">
-        <h2>Reminders</h2>
-        <ul>
-          {userData.reminders && userData.reminders.map((reminder, index) => (
-            <li key={index}>{reminder}</li>
-          ))}
-        </ul>
-      </div>
+        {/* Reminder Button */}
+        <div className="section reminders">
+          <h3>Reminders</h3>
+          <button type="button" onClick={handleReminderClick} className="reminder-btn">
+            Show Reminders
+          </button>
+        </div>
 
-      {/* Loan Application Button */}
-      <button className="loan-apply-btn" onClick={handleLoanApplicationClick}>
-        Apply for a Loan
-      </button>
+        {/* Submit Button */}
+        <button type="submit" className="loan-apply-btn" onClick={handleLoanApplicationClick}>
+          Apply for a loan
+        </button>
+      </form>
     </div>
   );
 };

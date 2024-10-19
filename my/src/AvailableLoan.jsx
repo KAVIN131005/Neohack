@@ -1,6 +1,4 @@
-// src/components/AvailableLoan.jsx
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './AvailableLoan.css'; // Add necessary styles
 
 const AvailableLoan = () => {
@@ -9,29 +7,41 @@ const AvailableLoan = () => {
   const [filters, setFilters] = useState({
     riskLevel: '',
     businessType: '',
-    loanAmount: ''
+    loanAmount: '',
+    upiId: '' // State to store UPI ID
   });
-  const [lenderProfile, setLenderProfile] = useState({}); // State for lender profile
+  const [lenderProfile, setLenderProfile] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    totalInvestments: 0,
+    repaymentAmount: 0
+  });
+  const [repaymentDetails, setRepaymentDetails] = useState({ amount: '' });
 
   useEffect(() => {
-    // Fetch available loans and lender profile
     const fetchLoansAndProfile = async () => {
       try {
-        const loanResponse = await axios.get('http://localhost:5000/api/lender/available-loans', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}` // Assuming token is stored in localStorage
-          }
-        });
-        setLoans(loanResponse.data);
-        setFilteredLoans(loanResponse.data);
-
-        // Fetch lender profile
-        const profileResponse = await axios.get('http://localhost:5000/api/lender/profile', {
+        // Fetch available loans for investment
+        const loanResponse = await fetch('http://localhost:5000/api/lender/available-loans', {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`
           }
         });
-        setLenderProfile(profileResponse.data);
+        const loansData = await loanResponse.json();
+        setLoans(loansData);
+        setFilteredLoans(loansData);
+
+        // Fetch lender profile
+        const profileResponse = await fetch('http://localhost:5000/api/lender/profile', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        const profileData = await profileResponse.json();
+        setLenderProfile(profileData);
       } catch (error) {
         console.error("Error fetching data", error);
       }
@@ -40,15 +50,21 @@ const AvailableLoan = () => {
     fetchLoansAndProfile();
   }, []);
 
-  // Handle filters and update filtered loans
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
+  };
 
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setLenderProfile({ ...lenderProfile, [name]: value });
+  };
+
+  const handleSearch = () => {
     const filtered = loans.filter((loan) => {
       const meetsRiskLevel = filters.riskLevel ? loan.riskLevel === filters.riskLevel : true;
       const meetsBusinessType = filters.businessType ? loan.businessType === filters.businessType : true;
-      const meetsLoanAmount = filters.loanAmount ? loan.loanAmount <= filters.loanAmount : true;
+      const meetsLoanAmount = filters.loanAmount ? loan.loanAmount <= parseInt(filters.loanAmount) : true;
 
       return meetsRiskLevel && meetsBusinessType && meetsLoanAmount;
     });
@@ -56,10 +72,10 @@ const AvailableLoan = () => {
     setFilteredLoans(filtered);
   };
 
-  // Handle investment
   const handleInvest = async (loanId) => {
     try {
-      await axios.post(`http://localhost:5000/api/lender/invest/${loanId}`, {}, {
+      await fetch(`http://localhost:5000/api/lender/invest/${loanId}`, {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -70,51 +86,97 @@ const AvailableLoan = () => {
     }
   };
 
-  // Function to set up repayment via Razorpay
-  const handleRepaymentSetup = () => {
-    // Razorpay repayment setup logic
-    const options = {
-      key: 'YOUR_RAZORPAY_KEY', // Razorpay key
-      amount: lenderProfile.repaymentAmount * 100, // Assuming repaymentAmount is in INR
-      currency: 'INR',
-      name: 'Peer-to-Peer Lending',
-      description: 'Setting up repayment',
-      handler: function (response) {
-        console.log(response);
-        alert('Repayment setup successful');
-      },
-      prefill: {
-        name: lenderProfile.name, // Display lender's name
-        email: lenderProfile.email, // Display lender's email
-        contact: lenderProfile.phoneNumber, // Display lender's phone
-      },
-      theme: {
-        color: '#3399cc',
-      },
-    };
+  const handleRepaymentSetup = async (loanId) => {
+    try {
+      const { amount } = repaymentDetails;
+      await fetch('http://localhost:5000/api/lender/repayment', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ loanId, amount })
+      });
+      alert('Repayment setup successfully!');
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+      // Redirect to Razorpay website after setting up repayment
+      window.location.href = 'https://razorpay.com/'; // Replace with the actual URL you want to redirect to
+    } catch (error) {
+      console.error("Error setting up repayment", error);
+    }
+  };
+
+  // Function to handle repayment redirection
+  const handleRepaymentRedirect = () => {
+    window.location.href = 'https://razorpay.com/';
   };
 
   return (
     <div className="available-loans-page">
       <h2>Available Loans for Investment</h2>
 
-      {/* Lender Profile Information */}
       <section className="lender-profile">
         <h3>Lender Profile</h3>
-        <p><strong>Name:</strong> {lenderProfile.name}</p>
-        <p><strong>Email:</strong> {lenderProfile.email}</p>
-        <p><strong>Phone:</strong> {lenderProfile.phoneNumber}</p>
-        <p><strong>Total Investments:</strong> ${lenderProfile.totalInvestments || 0}</p>
-        <p><strong>Repayment Amount:</strong> ${lenderProfile.repaymentAmount || 0}</p>
-        <button className="repayment-btn" onClick={handleRepaymentSetup}>
-          Setup Repayment
-        </button>
+
+        {/* Input fields for the profile */}
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={lenderProfile.name}
+            onChange={handleProfileChange}
+            placeholder="Enter your name"
+          />
+        </label>
+
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            value={lenderProfile.email}
+            onChange={handleProfileChange}
+            placeholder="Enter your email"
+          />
+        </label>
+
+        <label>
+          Phone Number:
+          <input
+            type="text"
+            name="phoneNumber"
+            value={lenderProfile.phoneNumber}
+            onChange={handleProfileChange}
+            placeholder="Enter your phone number"
+          />
+        </label>
+
+        <label>
+          Total Investments:
+          <input
+            type="number"
+            name="totalInvestments"
+            value={lenderProfile.totalInvestments}
+            onChange={handleProfileChange}
+            placeholder="Enter total investments"
+          />
+        </label>
+
+        <label>
+          Repayment Amount:
+          <input
+            type="number"
+            name="repaymentAmount"
+            value={lenderProfile.repaymentAmount}
+            onChange={handleProfileChange}
+            placeholder="Enter repayment amount"
+          />
+        </label>
+
+        <button className="save-profile-btn">Save Profile</button>
       </section>
 
-      {/* Filters */}
       <div className="filter-section">
         <label>
           Risk Level:
@@ -146,9 +208,21 @@ const AvailableLoan = () => {
             placeholder="Enter max loan amount"
           />
         </label>
+
+        <label>
+          UPI ID:
+          <textarea
+            name="upiId"
+            value={filters.upiId}
+            onChange={handleFilterChange}
+            placeholder="Enter your UPI ID"
+            rows="2"
+          />
+        </label>
+
+        <button className="search-btn" onClick={handleSearch}>Search</button>
       </div>
 
-      {/* Loan Listings */}
       <div className="loan-listings">
         {filteredLoans.length > 0 ? filteredLoans.map((loan) => (
           <div key={loan._id} className="loan-card">
@@ -161,13 +235,21 @@ const AvailableLoan = () => {
             <p><strong>Total Raised:</strong> ${loan.totalRaised}</p>
             <p><strong>Amount Remaining:</strong> ${loan.loanAmount - loan.totalRaised}</p>
 
-            {/* Button to invest */}
             <button className="invest-btn" onClick={() => handleInvest(loan._id)}>
               Invest Now
             </button>
+
+            <button className="set-repayment-btn" onClick={() => handleRepaymentSetup(loan._id)}>
+              Set Repayment
+            </button>
           </div>
         )) : (
-          <p>No loans available for your filter criteria.</p>
+          <>
+            <p>No loans available for your filter criteria.</p>
+            <button className="repayment-btn" onClick={handleRepaymentRedirect}>
+              Repayment
+            </button>
+          </>
         )}
       </div>
     </div>
