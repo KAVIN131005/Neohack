@@ -1,0 +1,99 @@
+/* General Styles for the login page */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    height: 100%;
+  }
+  
+  .login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7fafc;
+  }
+  
+  .login-form {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 350px;
+    text-align: center;
+  }
+  
+  .login-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #2D3748; /* Dark Gray for headings */
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .login-form input:focus {
+    outline: none;
+    border-color: #2B6CB0; /* Muted Blue for focus */
+    box-shadow: 0 0 5px rgba(43, 108, 176, 0.5);
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #2B6CB0; /* Muted Blue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn:hover {
+    background-color: #2C5282; /* Darker Blue on hover */
+  }
+  
+  /* Additional styles for better aesthetics */
+  .login-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #4C51BF, #68D391); /* Soft Gradient Background */
+    opacity: 0.2;
+    z-index: -1;
+  }
+  
+  .login-form input[type="email"],
+  .login-form input[type="password"] {
+    background-color: #edf2f7; /* Light Gray background */
+    color: #4A5568; /* Medium Gray text */
+  }
+  
+  .login-form input[type="email"]::placeholder,
+  .login-form input[type="password"]::placeholder {
+    color: #a0aec0; /* Placeholder color */
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .login-form {
+      width: 90%;
+      padding: 30px;
+    }
+  
+    .login-form h2 {
+      font-size: 1.5rem;
+    }
+  }

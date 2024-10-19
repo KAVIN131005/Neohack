@@ -1,0 +1,195 @@
+/* src/styles/LenderAccount.css */
+
+.account-page {
+  padding: 40px;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-page h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.account-info {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.account-info p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 10px 0;
+}
+
+.available-loans {
+  width: 80%;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.available-loans-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.available-loans-btn:hover {
+  background-color: #0056b3;
+}
+
+.loans-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.loan-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.loan-card h4 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.loan-card p {
+  font-size: 1rem;
+  color: #555;
+  margin: 8px 0;
+}
+
+.invest-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.invest-btn:hover {
+  background-color: #218838;
+}
+
+/* Payment History */
+.payment-history {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.payment-history h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.payment-history ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.payment-history ul li {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.payment-history ul li p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Notifications */
+.notifications {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.notifications h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.notifications ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.notifications ul li {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.notifications ul li p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Reminders */
+.reminders {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.reminders h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.reminders ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reminders ul li {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.reminders ul li p {
+  font-size: 1rem;
+  color: #555;
+}

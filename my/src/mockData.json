@@ -1,0 +1,39 @@
+{
+    "borrowers": [
+      {
+        "id": 1,
+        "name": "Alice",
+        "income": 60000,
+        "debt": 5000,
+        "repaymentHistory": "good",
+        "creditScore": 750
+      },
+      {
+        "id": 2,
+        "name": "Bob",
+        "income": 45000,
+        "debt": 15000,
+        "repaymentHistory": "average",
+        "creditScore": 650
+      }
+    ],
+    "lenders": [
+      {
+        "id": 1,
+        "name": "Charlie",
+        "income": 80000,
+        "debt": 10000,
+        "loanActivity": 5,
+        "creditScore": 770
+      },
+      {
+        "id": 2,
+        "name": "David",
+        "income": 55000,
+        "debt": 5000,
+        "loanActivity": 3,
+        "creditScore": 720
+      }
+    ]
+  }
+  

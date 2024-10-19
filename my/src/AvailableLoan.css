@@ -1,0 +1,131 @@
+/* AvailableLoan.css */
+
+.available-loans-page {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Lender Profile Section */
+.lender-profile {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.lender-profile h3 {
+  color: #2980b9;
+  margin-bottom: 10px;
+}
+
+.lender-profile p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.repayment-btn {
+  background-color: #2980b9;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.repayment-btn:hover {
+  background-color: #1f6a97;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  background-color: #f0f4f7;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #34495e;
+}
+
+.filter-section select,
+.filter-section input {
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Loan Listings */
+.loan-listings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.loan-card {
+  background-color: white;
+  width: 300px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.loan-card:hover {
+  transform: scale(1.03);
+}
+
+.loan-card h3 {
+  color: #2980b9;
+  margin-bottom: 10px;
+}
+
+.loan-card p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.invest-btn {
+  background-color: #27ae60;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.invest-btn:hover {
+  background-color: #1e874b;
+}
+
+@media (max-width: 768px) {
+  .filter-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .loan-listings {
+    flex-direction: column;
+    align-items: center;
+  }
+}
