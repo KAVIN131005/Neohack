@@ -97,3 +97,16 @@ body, html {
       font-size: 1.5rem;
     }
   }
+  .input-box input {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Adjust padding to make space for the icon */
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+  }
+  .input-box {
+    position: relative;
+    margin-bottom: 20px;
+  }

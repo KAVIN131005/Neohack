@@ -36,8 +36,8 @@ h2, h3 {
   box-sizing: border-box;
 }
 
-.save-profile-btn {
-  background-color: #007bff;
+.repayment-btn {
+  background-color: #2980b9;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -47,8 +47,8 @@ h2, h3 {
   width: 100%;
 }
 
-.save-profile-btn:hover {
-  background-color: #013771;
+.repayment-btn:hover {
+  background-color: #1f6a97;
 }
 
 /* Filter Section */
@@ -115,13 +115,11 @@ h2, h3 {
 }
 
 .loan-card p {
-  color: #555;
-  margin-bottom: 10px;
+  font-size: 14px;
 }
 
-.invest-btn,
-.set-repayment-btn {
-  background-color: #013771;
+.invest-btn {
+  background-color: #27ae60;
   color: white;
   padding: 10px;
   border: none;
@@ -131,24 +129,8 @@ h2, h3 {
   font-size: 14px;
 }
 
-.invest-btn:hover,
-.set-repayment-btn:hover {
-  background-color: #013771;
-}
-
-.repayment-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  width: 100%;
-  font-size: 14px;
-}
-
-.repayment-btn:hover {
-  background-color: #013771;
+.invest-btn:hover {
+  background-color: #1e874b;
 }
 
 /* Mobile responsiveness */
