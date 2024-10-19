@@ -12,7 +12,6 @@ const LoanApplication = () => {
   const [collateralDetails, setCollateralDetails] = useState('');
   const [agreement, setAgreement] = useState(false);
   const [documents, setDocuments] = useState(null); // For storing selected documents
-  const [submissionStatus, setSubmissionStatus] = useState(null); // To track form submission success or error
 
   useEffect(() => {
     // Fetch borrower account data to pre-fill form
@@ -20,12 +19,12 @@ const LoanApplication = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/borrower/account', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
         });
         setUserData(response.data);
       } catch (error) {
-        console.error('Error fetching borrower data', error);
+        console.error("Error fetching borrower data", error);
       }
     };
 
@@ -61,13 +60,11 @@ const LoanApplication = () => {
       await axios.post('http://localhost:5000/api/borrower/loan-application', formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'multipart/form-data',
-        },
+        }
       });
-      setSubmissionStatus('success'); // Set success status
+      alert("Loan application and documents submitted successfully!");
     } catch (error) {
-      console.error('Error submitting loan application', error);
-      setSubmissionStatus('error'); // Set error status
+      console.error("Error submitting loan application", error);
     }
   };
 
@@ -75,26 +72,31 @@ const LoanApplication = () => {
     <div className="loan-application-page">
       <h2>Loan Application Form</h2>
 
-      {submissionStatus === 'success' && (
-        <div className="success-message">Your loan application has been submitted successfully!</div>
-      )}
-      {submissionStatus === 'error' && (
-        <div className="error-message">There was an error submitting your loan application. Please try again.</div>
-      )}
-
       <form onSubmit={handleSubmit}>
         {/* Personal Information */}
         <section className="section">
           <h3>Personal Information</h3>
-          <p>
-            <strong>Name:</strong> {userData.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {userData.email}
-          </p>
+          <label>Name:
+          <input
+          type="text"
+          placeholder="Name"
+          required
+        />
+        </label>
+        <label>Email:
+          <input
+          type="email"
+          placeholder="Email"
+          required
+        />
+        </label>
           <label>
             Phone Number:
-            <input type="tel" required placeholder="Enter your phone number" />
+            <input
+              type="tel"
+              required
+              placeholder="Enter your phone number"
+            />
           </label>
         </section>
 
@@ -181,8 +183,13 @@ const LoanApplication = () => {
         <section className="section">
           <h3>Document Upload</h3>
           <label>
-            Upload Documents (e.g., Proof of Income, ID, etc.):
-            <input type="file" multiple onChange={handleDocumentUpload} required />
+            Upload Documents (e.g., Proof of Income, ID, etc.):<br></br>
+            <input
+              type="file"
+              multiple
+              onChange={handleDocumentUpload}
+              required
+            />
           </label>
         </section>
 
