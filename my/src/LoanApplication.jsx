@@ -1,4 +1,3 @@
-// src/components/LoanApplication.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './LoanApplication.css'; // Add necessary styles here
@@ -12,6 +11,7 @@ const LoanApplication = () => {
   const [employmentStatus, setEmploymentStatus] = useState('');
   const [collateralDetails, setCollateralDetails] = useState('');
   const [agreement, setAgreement] = useState(false);
+  const [documents, setDocuments] = useState(null); // For storing selected documents
 
   useEffect(() => {
     // Fetch borrower account data to pre-fill form
@@ -31,28 +31,39 @@ const LoanApplication = () => {
     fetchUserData();
   }, []);
 
+  const handleDocumentUpload = (e) => {
+    setDocuments(e.target.files);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Collect loan application data
-    const loanApplicationData = {
-      loanAmount,
-      loanPurpose,
-      loanTerm,
-      annualIncome,
-      employmentStatus,
-      collateralDetails,
-      borrowerId: userData._id, // Assuming user has an ID
-    };
+    const formData = new FormData();
+    formData.append('loanAmount', loanAmount);
+    formData.append('loanPurpose', loanPurpose);
+    formData.append('loanTerm', loanTerm);
+    formData.append('annualIncome', annualIncome);
+    formData.append('employmentStatus', employmentStatus);
+    formData.append('collateralDetails', collateralDetails);
+    formData.append('borrowerId', userData._id); // Assuming user has an ID
+
+    // Append each document
+    if (documents) {
+      for (let i = 0; i < documents.length; i++) {
+        formData.append('documents', documents[i]);
+      }
+    }
 
     try {
-      // Submit loan application
-      await axios.post('http://localhost:5000/api/borrower/loan-application', loanApplicationData, {
+      // Submit loan application along with documents
+      await axios.post('http://localhost:5000/api/borrower/loan-application', formData, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
         }
       });
-      alert("Loan application submitted successfully!");
+      alert("Loan application and documents submitted successfully!");
     } catch (error) {
       console.error("Error submitting loan application", error);
     }
@@ -153,6 +164,20 @@ const LoanApplication = () => {
               value={collateralDetails}
               onChange={(e) => setCollateralDetails(e.target.value)}
               placeholder="Describe any assets you can offer as collateral"
+            />
+          </label>
+        </section>
+
+        {/* Document Upload */}
+        <section className="section">
+          <h3>Document Upload</h3>
+          <label>
+            Upload Documents (e.g., Proof of Income, ID, etc.):
+            <input
+              type="file"
+              multiple
+              onChange={handleDocumentUpload}
+              required
             />
           </label>
         </section>
