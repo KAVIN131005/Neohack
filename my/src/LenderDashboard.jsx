@@ -19,7 +19,7 @@ const LenderLogin = () => {
     if (validate()) {
       try {
         // Fetch the users from the mock API
-        const response = await axios.get("http://localhost:3001/lenders");
+        const response = await axios.get("http://localhost:3000/lenders");
         const user = response.data.find(
           (u) => u.email === email && u.password === password
         );

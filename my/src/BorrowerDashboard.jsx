@@ -17,7 +17,7 @@ const BorrowerLogin = () => {
 
     if (validate()) {
       try {
-        const response = await axios.get("http://localhost:3001/borrowers");
+        const response = await axios.get("http://localhost:3000/borrowers");
         
 
         const user = response.data.find(
